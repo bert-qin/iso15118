@@ -8,12 +8,17 @@ ENV PYTHONFAULTHANDLER=1 \
   PYTHONHASHSEED=random \
   PIP_NO_CACHE_DIR=1 \
   PIP_DISABLE_PIP_VERSION_CHECK=1 \
-  PIP_DEFAULT_TIMEOUT=100 \
+  PIP_DEFAULT_TIMEOUT=300 \
   POETRY_VERSION=1.3.2 \
   VIRTUALENV_PIP=21.2.1 \
-  MYPY_VERSION=0.930
+  MYPY_VERSION=0.930 \
+  PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple \
+  POETRY_MAX_WORKERS=1
 
 RUN pip install "poetry==$POETRY_VERSION" "mypy==$MYPY_VERSION"
+
+RUN poetry config repositories.pypi https://pypi.tuna.tsinghua.edu.cn/simple
+
 COPY .coveragerc mypy.ini .flake8 poetry.lock pyproject.toml ./
 
 # During make build this sed command is substituted by 's/secc/evcc/g'
@@ -35,6 +40,19 @@ RUN poetry build
 # Runtime image (which is smaller than the build one)
 FROM python:3.10.0-buster
 WORKDIR /usr/src/app
+
+ENV PYTHONFAULTHANDLER=1 \
+  PYTHONUNBUFFERED=1 \
+  PYTHONHASHSEED=random \
+  PIP_NO_CACHE_DIR=1 \
+  PIP_DISABLE_PIP_VERSION_CHECK=1 \
+  PIP_DEFAULT_TIMEOUT=300 \
+  POETRY_VERSION=1.3.2 \
+  VIRTUALENV_PIP=21.2.1 \
+  MYPY_VERSION=0.930 \
+  PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple \
+  POETRY_MAX_WORKERS=1
+  
 # Installs Java
 RUN apt update && apt install -y default-jre
 # Create virtualenv
