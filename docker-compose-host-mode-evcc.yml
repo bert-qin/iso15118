@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+
+  evcc:
+    env_file: .env.dev.docker
+    hostname: evcc
+    build:
+      context: .
+      dockerfile: iso15118/evcc/Dockerfile
+    depends_on:
+      - redis
+    network_mode: host
+
+  redis:
+    image: redis:6.2.6-alpine
+    ports:
+     - "6379:6379"

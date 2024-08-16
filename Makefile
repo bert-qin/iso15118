@@ -65,6 +65,14 @@ dev:
 	# the dev file apply changes to the original compose file
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 
+secc:
+	# the dev file apply changes to the original compose file
+	docker-compose -f docker-compose-host-mode-secc.yml up
+
+evcc:
+	# the dev file apply changes to the original compose file
+	docker-compose -f docker-compose-host-mode-evcc.yml up
+
 # Run using prod env vars
 run:
 	docker-compose -f docker-compose.yml -f docker-compose.prod.yml up

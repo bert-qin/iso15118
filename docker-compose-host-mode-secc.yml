@@ -1,0 +1,16 @@
+version: '3.9'
+services:
+  secc:
+    env_file: .env.dev.docker
+    hostname: secc
+    build:
+      context: .
+      dockerfile: iso15118/secc/Dockerfile
+    depends_on:
+      - redis
+    network_mode: host
+
+  redis:
+    image: redis:6.2.6-alpine
+    ports:
+     - "6379:6379"
